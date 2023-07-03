@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+	<data>
+		<record model="ir.ui.view" id="ordre_mission_cm_tree_id_inherit_mobile_pay_cm">
+			<field name="name">hr.om.view.tree.inherit.mobile_pay_cm</field>
+			<field name="model">hr.om</field>
+			<field name="inherit_id" ref="hr_mission_cm.ordre_mission_cm_tree_id"/>
+			<field name="arch" type="xml">
+				<xpath expr="//tree/field[@name='employee_id']" position="after">
+					<field name="mobile_phone"/>
+				</xpath>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="ordre_mission_cm_form_id_inherit_mobile_pay_cm">
+			<field name="name">hr.om.view.form.inherit.mobile_pay_cm</field>
+			<field name="model">hr.om</field>
+			<field name="inherit_id" ref="hr_mission_cm.hr_om_view_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="//sheet" position="before">
+					<header>
+						<button string="Payer" name="action_register_mobile_payment" type="object" class="oe_highlight" attrs="{'invisible':[('state','not in',('valid'))]}"/>
+						<field name="state" widget="statusbar" statusbar_visible="draft,valid,paid,running,close"/>
+					</header>
+				</xpath>
+				<xpath expr="//sheet" position="inside">
+					<notebook>
+						<page name="transactions" string="Mobile Transactions">
+							<field name="mobile_transaction_ids" nolabel="0" mode="tree" readonly="1">
+								<tree editable="false" create="false">
+									<field name="pk"/>
+									<field name="reference"/>
+									<field name="payment_id"/>
+									<field name="client_nom"/>
+									<field name="montant"/>
+									<field name="type_operation"/>
+									<field name="statut"/>
+								</tree>
+							</field>
+						</page>
+					</notebook>
+				</xpath>
+				<xpath expr="//sheet" position="after">
+					<div class="oe_chatter">
+						<field name="message_follower_ids" groups="base.group_user"/>
+						<field name="activity_ids"/>
+						<field name="message_ids"/>
+					</div>
+				</xpath>
+			</field>
+		</record>
+	</data>
+</odoo>

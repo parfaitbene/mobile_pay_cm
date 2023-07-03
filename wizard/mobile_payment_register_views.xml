@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record id="view_mobile_payment_register_form" model="ir.ui.view">
+			<field name="name">mobile.payment.register.form</field>
+			<field name="model">mobile.payment.register</field>
+			<field name="arch" type="xml">
+				<form string="Register Payment">
+					<field name="company_id" invisible="1"/>
+					<group>
+						<group name="group1">
+							<field name="journal_id"/>
+							<field name="operateur_envoie"/>
+							<field name="operateur_recu" invisible="1"/>
+							<field name="phone" widget="phone"/>
+						</group>
+						<group name="group2">
+							<field name="amount"/>
+							<field name="payment_date"/>
+							<field name="communication"/>
+						</group>
+					</group>
+					<footer>
+						<button string="Create Payment" name="action_hr_om_create_payments" type="object" 
+								class="oe_highlight"
+								invisible="context.get('src_model', '') != 'hr.om'"
+								data-hotkey="c"/>
+						<button string="Create Payment" name="action_vendor_bill_create_payments" type="object" 
+								class="oe_highlight" 
+								invisible="context.get('src_model', '') != 'account.move'"
+								data-hotkey="v"/>
+						<button string="Cancel" class="btn btn-secondary" special="cancel" data-hotkey="q"/>
+					</footer>
+				</form>
+			</field>
+		</record>
+
+	</data>
+</odoo>

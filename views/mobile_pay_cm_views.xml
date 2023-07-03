@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+	<data>
+		<record id="mobile_pay_cm_config_view_form" model="ir.ui.view">
+			<field name="name">mobile_pay_cm.config.view.form</field>
+			<field name="model">mobile_pay_cm.config</field>
+			<field name="arch" type="xml">
+				<form string="Mobile Pay Config">
+					<header>
+						<button string="Enable" name="action_enable" type="object" attrs="{'invisible': [('state', '=', 'done')]}"/>
+						<button string="Disable" name="action_disable" type="object" attrs="{'invisible': [('state', '=', 'draft')]}"/>
+						<field name="state" widget="statusbar" statusbar_visible="draft,done"/>
+					</header>
+					<sheet>
+						<group string="General">
+							<group>
+								<field name="name"/>
+								<field name="login"/>
+								<field name="password" password="True"/>
+								<field name="token" password="True"/>
+							</group>
+							<group>
+								<field name="api_login_url"/>
+								<field name="api_pay_out_url"/>
+								<field name="api_check_status_url"/>
+							</group>
+						</group>
+						<group string="Others">
+							<group>
+								<field name="company_id"/>
+								<field name="active"/>
+							</group>
+						</group>
+					</sheet>
+					<div class="oe_chatter">
+						<field name="message_follower_ids" group="base.group_user"/>
+						<field name="activity_ids"/>
+						<field name="message_ids"/>
+					</div>
+				</form>
+			</field>
+		</record>
+
+		<record id="mobile_pay_cm_config_view_tree" model="ir.ui.view">
+			<field name="name">mobile_pay_cm.config.view.tree</field>
+			<field name="model">mobile_pay_cm.config</field>
+			<field name="arch" type="xml">
+				<tree string="Configurations">
+					<field name="name"/>
+					<field name="company_id" groups="base.group_multi_company"/>
+					<field name="state"/>
+				</tree>
+			</field>
+		</record>
+
+		<record id="mobile_pay_cm_config_action" model="ir.actions.act_window">
+			<field name="name">Mobile Pay Config</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">mobile_pay_cm.config</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="mobile_pay_cm_config_view_tree"/>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create a new payment API configuration
+				</p>
+				<p>
+					You must define a configuration before start using mobile payments.
+				</p>
+			</field>
+		</record>
+
+		<record id="mobile_pay_cm_config_action_obtain_token" model="ir.actions.server">
+			<field name="name">Obtain a token</field>
+			<field name="model_id" ref="model_mobile_pay_cm_config"/>
+			<field name="binding_model_id" ref="model_mobile_pay_cm_config"/>
+			<field name="state">code</field>
+			<field name="code">
+				record.login_user()
+			</field>
+		</record>
+		
+		<menuitem id="mobile_pay_cm_menu_root" name="Mobile Pay"/>
+
+		<menuitem id="mobile_pay_cm_menu_config" name="Configuration"
+				sequence="16"
+				parent="mobile_pay_cm_menu_root"
+				action="mobile_pay_cm_config_action" 
+				groups="mobile_pay_cm_admin_group"/>
+
+		<record id="mobile_pay_cm_mobile_transaction_view_form" model="ir.ui.view">
+			<field name="name">mobile_pay_cm.mobile.transaction.view.form</field>
+			<field name="model">mobile_pay_cm.mobile.transaction</field>
+			<field name="arch" type="xml">
+				<form string="Mobile Transaction" create="false" edit="false" duplicate="false">
+					<header>
+						<field name="state" widget="statusbar"/>
+					</header>
+					<sheet>
+						<group name="group1">
+							<group name="group1_1" string="Business informations">
+								<field name="name"/>
+								<field name="hr_om_id"/>
+								<field name="payment_id"/>
+							</group>
+							<group name="group1_2" string="Request parameters">
+								<field name="montant"/>
+								<field name="client_nom"/>
+								<field name="client_prenom"/>
+								<field name="operateur_envoie"/>
+								<field name="operateur_recu"/>
+								<field name="numero_beneficiaire"/>
+							</group>
+						</group>
+						<group name="group2" string="Response parameters">
+							<group name="group2_1">
+								<field name="pk"/>
+								<field name="reference"/>
+								<field name="statut"/>
+								<field name="code"/>
+								<field name="type_operation"/>
+								<field name="charge"/>
+								<field name="operateur_envoie"/>
+								<field name="operateur_recu"/>
+							</group>
+							<group>
+								<field name="price_transaction"/>
+								<field name="charge_plateforme"/>
+								<field name="compte_virtuel_id"/>
+								<field name="id_produit_psi"/>
+								<field name="message_id"/>
+								<field name="payment_url"/>
+								<field name="pay_token"/>
+								<field name="notif_token"/>
+							</group>
+						</group>
+					</sheet>
+					<div class="oe_chatter">
+						<field name="message_follower_ids" group="base.group_user"/>
+						<field name="activity_ids"/>
+						<field name="message_ids"/>
+					</div>
+				</form>
+			</field>
+		</record>
+
+		<record id="mobile_pay_cm_mobile_transaction_view_tree" model="ir.ui.view">
+			<field name="name">mobile_pay_cm.mobile.transaction.view.tree</field>
+			<field name="model">mobile_pay_cm.mobile.transaction</field>
+			<field name="arch" type="xml">
+				<tree string="Mobile Transactions" create="false">
+					<field name="pk"/>
+					<field name="reference"/>
+					<field name="payment_id"/>
+					<field name="client_nom"/>
+					<field name="numero_beneficiaire"/>
+					<field name="montant"/>
+					<field name="type_operation"/>
+					<field name="statut"/>
+				</tree>
+			</field>
+		</record>
+
+		<record id="mobile_pay_cm_mobile_transaction_action" model="ir.actions.act_window">
+			<field name="name">Mobile Transactions</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">mobile_pay_cm.mobile.transaction</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="mobile_pay_cm_mobile_transaction_view_tree"/>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					You don't have mobile transactions for the moment.
+				</p>
+			</field>
+		</record>
+
+		<menuitem id="mobile_pay_cm_menu_mobile_transaction_root" name="Mobile Transactions"
+				sequence="1"
+				parent="mobile_pay_cm_menu_root"
+				groups="mobile_pay_cm_user_group"/>
+
+		<menuitem id="mobile_pay_cm_menu_mobile_transaction" name="Transactions"
+				sequence="1"
+				parent="mobile_pay_cm_menu_mobile_transaction_root"
+				action="mobile_pay_cm_mobile_transaction_action"
+				groups="mobile_pay_cm_user_group"/>
+
+		<record id="mobile_pay_cm_mobile_transaction_log_view_tree" model="ir.ui.view">
+			<field name="name">mobile_pay_cm.mobile.transaction.log.view.tree</field>
+			<field name="model">mobile_pay_cm.mobile.transaction.log</field>
+			<field name="arch" type="xml">
+				<tree string="Mobile Transactions Log" create="false" 
+					  decoration-success="state == 'FINISH'"
+					  decoration-info="state == 'PROGRESS'">
+					<field name="reference"/>
+					<field name="state"/>
+					<field name="create_date"/>
+					<field name="message"/>
+				</tree>
+			</field>
+		</record>
+
+		<record id="mobile_pay_cm_mobile_transaction_log_action" model="ir.actions.act_window">
+			<field name="name">Mobile Transactions Log</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">mobile_pay_cm.mobile.transaction.log</field>
+			<field name="view_mode">tree</field>
+			<field name="view_id" ref="mobile_pay_cm_mobile_transaction_log_view_tree"/>
+		</record>
+
+		<menuitem id="mobile_pay_cm_menu_mobile_transaction_log" name="Log"
+				sequence="16"
+				parent="mobile_pay_cm_menu_mobile_transaction_root"
+				action="mobile_pay_cm_mobile_transaction_log_action"
+				groups="mobile_pay_cm_user_group"/>	</data>
+</odoo>

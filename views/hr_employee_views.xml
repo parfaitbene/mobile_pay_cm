@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+	<data>
+		<record model="ir.ui.view" id="view_employee_form_inherit_mobile_pay_cm">
+			<field name="name">hr.employee.view.form.inherit.mobile_pay_cm</field>
+			<field name="model">hr.employee</field>
+			<field name="inherit_id" ref="hr.view_employee_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="//sheet/notebook/page[@name='hr_settings']/group/group[@name='payroll_group']/field[@name='job_id']" position="after">
+					<field name="salary_account_id"/>
+				</xpath>
+			</field>
+		</record>
+	</data>
+</odoo>

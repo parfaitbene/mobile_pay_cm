@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+	<data>
+		<record id="view_account_journal_form" model="ir.ui.view">
+			<field name="name">account.journal.form.inherit.mobile_pay_cm</field>
+			<field name="model">account.journal</field>
+			<field name="inherit_id" ref="account.view_account_journal_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="//sheet/notebook/page[@name='advanced_settings']" position="after">
+					<page name="mobile_pay_settings" string="Mobile Pay Settings" attrs="{'invisible': [('type', '!=', 'cash')]}" groups="mobile_pay_cm.mobile_pay_cm_admin_group">
+						<group>
+							<group name="mobile_pay_settings">
+								<field name="is_mobile_pay_journal"/>
+							</group>
+						</group>
+					</page>
+				</xpath>
+			</field>
+		</record>
+	</data>
+</odoo>

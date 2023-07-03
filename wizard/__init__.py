@@ -1,0 +1,1 @@
+from . import mobile_payment_register
